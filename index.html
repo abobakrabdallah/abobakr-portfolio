@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Abobakr Abdallah Zayan — Android Engineer specializing in Kotlin, Jetpack Compose, and Clean Architecture. 2+ years building production mobile apps.">
+    <meta name="keywords" content="Android Developer, Kotlin, Jetpack Compose, Mobile Engineer, Portfolio">
+    <meta name="author" content="Abobakr Abdallah Zayan">
+    <title>Abobakr Abdallah Zayan — Android Engineer Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           DESIGN TOKENS
+           ============================================ */
+        :root {
+            --bg-primary: #0d1b2a;
+            --bg-secondary: #132337;
+            --bg-card: rgba(19, 35, 55, 0.6);
+            --bg-card-hover: rgba(27, 50, 78, 0.7);
+            --border-subtle: rgba(148, 175, 211, 0.1);
+            --border-accent: rgba(201, 147, 90, 0.25);
+            --text-primary: #e8ecf2;
+            --text-secondary: #8fa3bf;
+            --text-muted: #5c7290;
+            --accent-gold: #c9935a;
+            --accent-gold-light: #deb37c;
+            --accent-gold-dim: rgba(201, 147, 90, 0.12);
+            --accent-blue: #5b9bd5;
+            --accent-blue-dim: rgba(91, 155, 213, 0.12);
+            --accent-teal: #5ec4a0;
+            --accent-teal-dim: rgba(94, 196, 160, 0.1);
+            --gradient-gold: linear-gradient(135deg, #c9935a, #deb37c, #e8c99b);
+            --gradient-navy: linear-gradient(135deg, #1b3a5c, #244b74);
+            --gradient-shine: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-card-hover: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(201, 147, 90, 0.08);
+            --shadow-btn: 0 4px 20px rgba(27, 58, 92, 0.4);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-pill: 100px;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::selection {
+            background: rgba(201, 147, 90, 0.3);
+            color: #fff;
+        }
+
+        a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            transition: color 0.3s var(--transition-smooth);
+        }
+
+        a:hover {
+            color: var(--accent-gold-light);
+        }
+
+        /* ============================================
+           BACKGROUND
+           ============================================ */
+        .bg-noise {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(27, 58, 92, 0.4), transparent),
+                radial-gradient(ellipse 50% 40% at 85% 70%, rgba(201, 147, 90, 0.06), transparent),
+                radial-gradient(ellipse 40% 30% at 10% 80%, rgba(91, 155, 213, 0.06), transparent);
+        }
+
+        .bg-noise::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(148,175,211,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148,175,211,0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 20%, transparent 100%);
+        }
+
+        /* ============================================
+           CURSOR GLOW (desktop only)
+           ============================================ */
+        .cursor-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,147,90,0.04) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: left 0.5s ease, top 0.5s ease;
+        }
+
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        section {
+            padding: 110px 0;
+            position: relative;
+        }
+
+        /* ============================================
+           NAVIGATION — Floating pill
+           ============================================ */
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            padding: 0;
+            transition: all 0.5s var(--transition-smooth);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px 10px 20px;
+            background: rgba(13, 27, 42, 0.7);
+            backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s var(--transition-smooth);
+        }
+
+        .navbar.scrolled .nav-inner {
+            background: rgba(13, 27, 42, 0.88);
+            border-color: var(--border-accent);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 0 1px rgba(201,147,90,0.2);
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+            letter-spacing: -0.5px;
+            margin-right: 16px;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+            padding: 7px 14px;
+            border-radius: var(--radius-pill);
+            transition: all 0.3s var(--transition-smooth);
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: rgba(201, 147, 90, 0.08);
+        }
+
+        .nav-links a.active {
+            color: var(--accent-gold);
+            background: var(--accent-gold-dim);
+        }
+
+        .nav-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--border-subtle);
+            border-radius: 50%;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-toggle:hover {
+            border-color: var(--accent-gold);
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 16px;
+            height: 2px;
+            background: var(--text-secondary);
+            border-radius: 2px;
+            transition: all 0.35s var(--transition-smooth);
+            position: relative;
+        }
+
+        .nav-toggle span::before,
+        .nav-toggle span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--text-secondary);
+            border-radius: 2px;
+            transition: all 0.35s var(--transition-smooth);
+        }
+
+        .nav-toggle span::before { top: -5px; }
+        .nav-toggle span::after  { top: 5px; }
+
+        .nav-toggle.open span { background: transparent; }
+        .nav-toggle.open span::before { top: 0; transform: rotate(45deg); background: var(--accent-gold); }
+        .nav-toggle.open span::after  { top: 0; transform: rotate(-45deg); background: var(--accent-gold); }
+
+        /* Mobile nav overlay */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99;
+            background: rgba(13, 27, 42, 0.96);
+            backdrop-filter: blur(30px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.4s var(--transition-smooth);
+        }
+
+        .mobile-nav.open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .mobile-nav a {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+            letter-spacing: -0.3px;
+        }
+
+        .mobile-nav a:hover {
+            color: var(--accent-gold);
+            background: var(--accent-gold-dim);
+        }
+
+        /* ============================================
+           BUTTONS — sweep fill animation
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 30px;
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s var(--transition-smooth);
+            letter-spacing: 0.2px;
+        }
+
+        .btn svg {
+            width: 17px;
+            height: 17px;
+            transition: transform 0.3s var(--transition-bounce);
+        }
+
+        .btn:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* Primary: navy fill with gold border sweep */
+        .btn-primary {
+            background: var(--gradient-navy);
+            color: #fff;
+            border: 1.5px solid rgba(91, 155, 213, 0.2);
+            box-shadow: var(--shadow-btn);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(201,147,90,0.15), transparent);
+            transition: left 0.6s var(--transition-smooth);
+        }
+
+        .btn-primary:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 8px 30px rgba(27, 58, 92, 0.5), 0 0 20px rgba(201,147,90,0.1);
+            transform: translateY(-3px);
+            color: #fff;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        /* Secondary: outline with fill on hover */
+        .btn-outline {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border-subtle);
+        }
+
+        .btn-outline::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent-gold-dim);
+            border-radius: inherit;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s var(--transition-smooth);
+            z-index: -1;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            transform: translateY(-3px);
+        }
+
+        .btn-outline:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+
+        .hero-content {
+            max-width: 740px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 18px;
+            background: var(--accent-teal-dim);
+            border: 1px solid rgba(94, 196, 160, 0.18);
+            border-radius: var(--radius-pill);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-teal);
+            margin-bottom: 28px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            animation: slideDown 0.6s var(--transition-smooth) forwards;
+        }
+
+        .hero-badge .dot {
+            width: 7px;
+            height: 7px;
+            background: var(--accent-teal);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(94,196,160,0.5);
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.6rem, 6vw, 4.2rem);
+            font-weight: 900;
+            line-height: 1.08;
+            letter-spacing: -2.5px;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 .line {
+            display: block;
+            overflow: hidden;
+        }
+
+        .hero h1 .line-inner {
+            display: block;
+            animation: revealUp 0.8s var(--transition-smooth) forwards;
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        .hero h1 .line:nth-child(2) .line-inner {
+            animation-delay: 0.15s;
+        }
+
+        .hero h1 .gold {
+            color: var(--accent-gold);
+        }
+
+        @keyframes revealUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 28px;
+            max-width: 580px;
+            line-height: 1.75;
+            animation: fadeIn 0.8s 0.4s var(--transition-smooth) forwards;
+            opacity: 0;
+        }
+
+        .hero .tagline strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* contact chips */
+        .contact-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 36px;
+            animation: fadeIn 0.8s 0.55s var(--transition-smooth) forwards;
+            opacity: 0;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: rgba(19, 35, 55, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 500;
+            transition: all 0.35s var(--transition-smooth);
+        }
+
+        .chip svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+            color: var(--accent-gold);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .chip:hover {
+            background: rgba(27, 50, 78, 0.6);
+            border-color: var(--border-accent);
+            color: var(--text-primary);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .chip:hover svg {
+            opacity: 1;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            animation: fadeIn 0.8s 0.7s var(--transition-smooth) forwards;
+            opacity: 0;
+        }
+
+        /* ============================================
+           SECTION HEADERS
+           ============================================ */
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-bottom: 14px;
+        }
+
+        .section-tag::before {
+            content: '';
+            width: 28px;
+            height: 2px;
+            background: var(--gradient-gold);
+            border-radius: 1px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 800;
+            letter-spacing: -1.2px;
+            line-height: 1.2;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-top: 10px;
+            max-width: 500px;
+        }
+
+        /* ============================================
+           CARDS — Glass, border accent, shimmer
+           ============================================ */
+        .card {
+            position: relative;
+            padding: 32px;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            transition: all 0.45s var(--transition-smooth);
+            overflow: hidden;
+        }
+
+        /* shimmer sweep on hover */
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-shine);
+            background-size: 200% 100%;
+            background-position: -200% 0;
+            transition: background-position 0.8s ease;
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .card:hover::after {
+            background-position: 200% 0;
+        }
+
+        .card:hover {
+            border-color: var(--border-accent);
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow-card-hover);
+            transform: translateY(-6px);
+        }
+
+        /* Left accent bar on cards */
+        .card-accent {
+            border-left: 3px solid transparent;
+            border-image: var(--gradient-gold) 1;
+            border-image-slice: 1;
+        }
+
+        .card-accent {
+            border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--accent-gold);
+        }
+
+        .card-accent:hover {
+            border-color: var(--border-accent);
+            border-left-color: var(--accent-gold-light);
+        }
+
+        /* ============================================
+           ABOUT / STATS
+           ============================================ */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            font-size: 1.02rem;
+            line-height: 1.85;
+            margin-bottom: 18px;
+        }
+
+        .about-text strong {
+            color: var(--text-primary);
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .stat-card {
+            padding: 26px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-card .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            line-height: 1.1;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .stat-card .stat-number .suffix {
+            font-size: 1.1rem;
+            color: var(--accent-gold-light);
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ============================================
+           EXPERIENCE — Timeline style
+           ============================================ */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-gold), var(--accent-blue), transparent);
+            border-radius: 2px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -34px;
+            top: 32px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            border: 3px solid var(--bg-primary);
+            box-shadow: 0 0 12px rgba(201,147,90,0.3);
+        }
+
+        .timeline-card {
+            position: relative;
+        }
+
+        .timeline-card .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .experience-title h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .experience-title .company {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .date-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 16px;
+            background: var(--accent-gold-dim);
+            border: 1px solid rgba(201,147,90,0.15);
+            border-radius: var(--radius-pill);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            white-space: nowrap;
+        }
+
+        .date-pill svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .task-list {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+
+        .task-list li {
+            position: relative;
+            padding-left: 22px;
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            line-height: 1.75;
+            transition: color 0.3s ease;
+        }
+
+        .task-list li::before {
+            content: '';
+            position: absolute;
+            left: 2px;
+            top: 11px;
+            width: 8px;
+            height: 8px;
+            border: 2px solid var(--accent-gold);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .task-list li:hover {
+            color: var(--text-primary);
+        }
+
+        .task-list li:hover::before {
+            background: var(--accent-gold);
+        }
+
+        .task-list li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ============================================
+           PROJECTS — Tilt cards with top gradient
+           ============================================ */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 22px;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* top gradient strip */
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-gold);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            opacity: 0;
+            transform: scaleX(0);
+            transition: all 0.4s var(--transition-smooth);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        .project-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .project-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-gold-dim);
+            border: 1px solid rgba(201,147,90,0.12);
+            border-radius: var(--radius-md);
+            color: var(--accent-gold);
+            transition: all 0.35s var(--transition-smooth);
+        }
+
+        .project-card:hover .project-icon {
+            background: rgba(201,147,90,0.2);
+            transform: rotate(-4deg) scale(1.05);
+        }
+
+        .project-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .project-ext-link {
+            color: var(--text-muted);
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .project-ext-link:hover {
+            color: var(--accent-gold);
+            background: var(--accent-gold-dim);
+            transform: translateY(-2px);
+        }
+
+        .project-ext-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .project-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+
+        .badge-downloads {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent-teal);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .badge-downloads svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .badge-desktop {
+            color: var(--accent-blue);
+        }
+
+        .project-card > p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.65;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .tech-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tech-pills span {
+            padding: 4px 12px;
+            background: rgba(91, 155, 213, 0.08);
+            border: 1px solid rgba(91, 155, 213, 0.1);
+            border-radius: var(--radius-pill);
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            color: var(--accent-blue);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tech-pills span:hover {
+            background: rgba(91, 155, 213, 0.15);
+            border-color: rgba(91, 155, 213, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* ============================================
+           SKILLS — Category chips
+           ============================================ */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .skill-group {
+            padding: 24px 28px;
+        }
+
+        .skill-group-name {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-group-name .line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+
+        .skill-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-chip {
+            padding: 7px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s var(--transition-smooth);
+            cursor: default;
+        }
+
+        .skill-chip:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            background: var(--accent-gold-dim);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 6px 20px rgba(201,147,90,0.08);
+        }
+
+        /* ============================================
+           EDUCATION & ACTIVITIES — Split cards
+           ============================================ */
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .split-card {
+            padding: 36px;
+        }
+
+        .split-card-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-gold-dim);
+            border: 1px solid rgba(201,147,90,0.12);
+            border-radius: var(--radius-md);
+            color: var(--accent-gold);
+            margin-bottom: 22px;
+            transition: all 0.35s var(--transition-smooth);
+        }
+
+        .split-card:hover .split-card-icon {
+            background: rgba(201,147,90,0.2);
+            transform: rotate(-3deg) scale(1.08);
+        }
+
+        .split-card-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .split-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .split-card .meta {
+            font-size: 0.88rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .split-card .meta-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .split-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .split-card ul {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .split-card ul li {
+            padding-left: 20px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.7;
+            transition: color 0.3s ease;
+        }
+
+        .split-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 2px;
+            top: 10px;
+            width: 7px;
+            height: 7px;
+            border: 2px solid var(--accent-gold);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .split-card ul li:hover {
+            color: var(--text-primary);
+        }
+
+        .split-card ul li:hover::before {
+            background: var(--accent-gold);
+        }
+
+        /* ============================================
+           CONTACT CTA
+           ============================================ */
+        .cta-section {
+            text-align: center;
+            padding: 130px 0;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            margin-bottom: 14px;
+        }
+
+        .cta-section h2 .gold {
+            color: var(--accent-gold);
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 480px;
+            margin: 0 auto 44px;
+            line-height: 1.75;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            padding: 36px 0;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        /* ============================================
+           SCROLL REVEAL
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
+        }
+
+        .reveal.from-left {
+            transform: translateX(-40px);
+        }
+
+        .reveal.from-right {
+            transform: translateX(40px);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+        /* stagger */
+        .stagger > * {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.55s var(--transition-smooth), transform 0.55s var(--transition-smooth);
+        }
+
+        .stagger.visible > *:nth-child(1) { transition-delay: 0.05s; }
+        .stagger.visible > *:nth-child(2) { transition-delay: 0.12s; }
+        .stagger.visible > *:nth-child(3) { transition-delay: 0.19s; }
+        .stagger.visible > *:nth-child(4) { transition-delay: 0.26s; }
+        .stagger.visible > *:nth-child(5) { transition-delay: 0.33s; }
+        .stagger.visible > *:nth-child(6) { transition-delay: 0.40s; }
+        .stagger.visible > *:nth-child(7) { transition-delay: 0.47s; }
+        .stagger.visible > *:nth-child(8) { transition-delay: 0.54s; }
+        .stagger.visible > *:nth-child(9) { transition-delay: 0.61s; }
+        .stagger.visible > *:nth-child(10) { transition-delay: 0.68s; }
+
+        .stagger.visible > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+
+        @media (max-width: 1024px) {
+            .about-grid { grid-template-columns: 1fr; gap: 36px; }
+            .split-grid  { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+            .skills-grid   { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 72px 0; }
+            .container { padding: 0 20px; }
+
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+
+            .nav-inner {
+                padding: 8px 12px 8px 16px;
+            }
+
+            .projects-grid { grid-template-columns: 1fr; }
+
+            .timeline { padding-left: 28px; }
+            .timeline::before { left: 6px; }
+            .timeline-dot { left: -26px; width: 10px; height: 10px; }
+
+            .timeline-card .experience-header { flex-direction: column; }
+
+            .contact-chips { flex-direction: column; }
+            .hero-buttons  { flex-direction: column; }
+            .btn { justify-content: center; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .cta-buttons .btn { width: 100%; max-width: 320px; }
+
+            .section-header { margin-bottom: 40px; }
+
+            .cta-section { padding: 80px 0; }
+            .cta-section h2 { font-size: 1.8rem; }
+            .cursor-glow { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            section { padding: 52px 0; }
+            .container { padding: 0 16px; }
+
+            .hero { padding-top: 80px; }
+            .hero h1 { font-size: 2.1rem; letter-spacing: -1.2px; }
+            .hero .tagline { font-size: 0.95rem; }
+
+            .stats-row { gap: 10px; }
+            .stat-card { padding: 20px 14px; }
+            .stat-card .stat-number { font-size: 1.7rem; }
+
+            .project-card, .skill-group, .split-card { padding: 22px; }
+            .timeline-card { padding: 24px !important; }
+
+            .nav-inner { gap: 4px; }
+            .nav-logo { font-size: 1rem; margin-right: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background -->
+    <div class="bg-noise"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Mobile nav overlay -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <!-- Navigation — Floating pill -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">AZ.</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ======================== HERO ======================== -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="dot"></span>
+                    Open to opportunities
+                </div>
+
+                <h1>
+                    <span class="line"><span class="line-inner">Abobakr Abdallah</span></span>
+                    <span class="line"><span class="line-inner gold">Zayan</span></span>
+                </h1>
+
+                <p class="tagline">
+                    <strong>Android Engineer</strong> with 2+ years shipping production‑grade mobile applications using
+                    <strong>Kotlin</strong>, <strong>Jetpack Compose</strong> &amp; <strong>Clean Architecture</strong>.
+                    Apps reaching <strong>1,000+</strong> downloads on Google Play.
+                </p>
+
+                <div class="contact-chips">
+                    <a class="chip" href="mailto:abobakrabdallah673@gmail.com">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        abobakrabdallah673@gmail.com
+                    </a>
+                    <a class="chip" href="tel:+201284117609">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        +20 128 411 7609
+                    </a>
+                    <a class="chip" href="https://linkedin.com/in/abobakr-abdallah" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a class="chip" href="https://github.com/AbobakrAbdallah" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        GitHub
+                    </a>
+                </div>
+
+                <div class="hero-buttons">
+                    <a class="btn btn-primary" href="#projects">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        View Projects
+                    </a>
+                    <a class="btn btn-outline" href="mailto:abobakrabdallah673@gmail.com">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        Get In Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== ABOUT ======================== -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">About</div>
+                <h2>Professional Summary</h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-text reveal from-left">
+                    <p>
+                        Results-driven <strong>Android Engineer</strong> with <strong>2+ years</strong> of professional experience building and shipping production-grade mobile applications using <strong>Kotlin</strong> and <strong>Jetpack Compose</strong>.
+                    </p>
+                    <p>
+                        Proven track record delivering apps with <strong>1,000+ downloads</strong> on Google Play. Proficient in <strong>Clean Architecture</strong>, <strong>MVVM/MVI</strong>, <strong>Ktor Client</strong>, <strong>Firebase</strong>, and modern Android tooling.
+                    </p>
+                    <p>
+                        Experienced collaborator in cross-functional product teams, with additional expertise in <strong>Kotlin Multiplatform (CMP)</strong> desktop development.
+                    </p>
+                </div>
+                <div class="stats-row reveal from-right stagger">
+                    <div class="card stat-card">
+                        <div class="stat-number"><span data-count="2">0</span><span class="suffix">+</span></div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-number"><span data-count="5">0</span><span class="suffix">+</span></div>
+                        <div class="stat-label">Apps Shipped</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-number"><span data-count="6500">0</span><span class="suffix">+</span></div>
+                        <div class="stat-label">Downloads</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-number"><span data-count="50">0</span><span class="suffix">+</span></div>
+                        <div class="stat-label">PRs Reviewed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== EXPERIENCE ======================== -->
+    <section id="experience">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">Experience</div>
+                <h2>Where I've Worked</h2>
+                <p>Building apps that make a real difference.</p>
+            </div>
+            <div class="timeline reveal">
+                <div class="card card-accent timeline-card" style="padding: 36px;">
+                    <div class="timeline-dot"></div>
+                    <div class="experience-header">
+                        <div class="experience-title">
+                            <h3>Android Developer — <span class="company">Systemira</span></h3>
+                        </div>
+                        <div class="date-pill">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Jun 2024 – Present
+                        </div>
+                    </div>
+                    <ul class="task-list">
+                        <li>Developed and shipped <strong>5 Android apps</strong> to Google Play using Kotlin and Jetpack Compose, reaching <strong>1,500+ combined installs</strong>.</li>
+                        <li>Implemented <strong>Clean Architecture (MVVM/MVI)</strong> with Flow & StateFlow for reactive state management.</li>
+                        <li>Integrated real-time features via <strong>Pusher WebSockets</strong> and consumed REST APIs with <strong>Ktor Client</strong>.</li>
+                        <li>Wrote unit tests with <strong>JUnit and Mockito</strong>; maintained test coverage on core business logic and ViewModels.</li>
+                        <li>Configured <strong>CI/CD pipelines</strong> using GitHub Actions to automate builds and Play Store deployments.</li>
+                        <li>Collaborated with UI/UX designers using <strong>Figma</strong>, delivering features within <strong>2-week sprint cycles</strong>.</li>
+                        <li>Performed code reviews on <strong>50+ PRs</strong> and mentored junior teammates on Clean Architecture and Kotlin best practices.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== PROJECTS ======================== -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">Projects</div>
+                <h2>Things I've Built</h2>
+                <p>Production apps on Google Play & beyond.</p>
+            </div>
+            <div class="projects-grid stagger reveal">
+
+                <!-- Delta Capital -->
+                <div class="card project-card">
+                    <div class="project-top">
+                        <div class="project-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        </div>
+                        <a class="project-ext-link" href="https://play.google.com/store/search?q=Delta%20Capital&c=apps" target="_blank" rel="noopener" title="Play Store">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
+                    </div>
+                    <h3>Delta Capital</h3>
+                    <div class="badge-downloads">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                        1,000+ Downloads
+                    </div>
+                    <p>Resident-facing compound app for visitor access control, secure social community, and in-home service requests.</p>
+                    <div class="tech-pills">
+                        <span>Kotlin</span><span>Compose</span><span>MVVM</span><span>Ktor</span><span>Firebase</span><span>Maps</span><span>Pusher</span>
+                    </div>
+                </div>
+
+                <!-- Alheba -->
+                <div class="card project-card">
+                    <div class="project-top">
+                        <div class="project-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                        </div>
+                        <a class="project-ext-link" href="https://play.google.com/store/apps/details?id=com.corptia.alheba&pcampaignid=web_share" target="_blank" rel="noopener" title="Play Store">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
+                    </div>
+                    <h3>Alheba</h3>
+                    <div class="badge-downloads">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                        5,000+ Downloads
+                    </div>
+                    <p>Consumer-facing e-commerce application with product browsing, cart management, and order processing.</p>
+                    <div class="tech-pills">
+                        <span>Kotlin</span><span>Compose</span><span>MVVM</span><span>Flow</span><span>Ktor</span><span>Firebase</span>
+                    </div>
+                </div>
+
+                <!-- Aqarify -->
+                <div class="card project-card">
+                    <div class="project-top">
+                        <div class="project-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <a class="project-ext-link" href="https://play.google.com/store/apps/details?id=com.systemira.aqarify" target="_blank" rel="noopener" title="Play Store">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
+                    </div>
+                    <h3>Aqarify</h3>
+                    <p>Full-featured CRM managing leads, client info, visits, permits, notifications, and worker records.</p>
+                    <div class="tech-pills">
+                        <span>Kotlin</span><span>Compose</span><span>MVI</span><span>StateFlow</span><span>Ktor</span><span>Clean Arch</span><span>Hilt</span>
+                    </div>
+                </div>
+
+                <!-- Fresh Zone -->
+                <div class="card project-card">
+                    <div class="project-top">
+                        <div class="project-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                        </div>
+                        <a class="project-ext-link" href="https://play.google.com/store/apps/details?id=com.systemira.freshzone" target="_blank" rel="noopener" title="Play Store">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
+                    </div>
+                    <h3>Fresh Zone</h3>
+                    <div class="badge-downloads">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                        500+ Downloads
+                    </div>
+                    <p>Consumer-facing grocery e-commerce app with product catalog, cart, and delivery workflow.</p>
+                    <div class="tech-pills">
+                        <span>Kotlin</span><span>Compose</span><span>MVVM</span><span>Flow</span><span>Ktor</span><span>Firebase</span>
+                    </div>
+                </div>
+
+                <!-- Pioneer Courses -->
+                <div class="card project-card">
+                    <div class="project-top">
+                        <div class="project-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        </div>
+                        <a class="project-ext-link" href="https://play.google.com/store/apps/details?id=com.systemira.pioneer&pcampaignid=web_share" target="_blank" rel="noopener" title="Play Store">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
+                    </div>
+                    <h3>Pioneer Courses</h3>
+                    <p>Android e-learning app with video courses, authentication, and progress tracking.</p>
+                    <div class="tech-pills">
+                        <span>Kotlin</span><span>Compose</span><span>MVI</span><span>StateFlow</span><span>Ktor</span><span>Firebase</span>
+                    </div>
+                </div>
+
+                <!-- Bakery Management System -->
+                <div class="card project-card">
+                    <div class="project-top">
+                        <div class="project-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        </div>
+                    </div>
+                    <h3>Bakery Management System</h3>
+                    <div class="badge-downloads badge-desktop">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Desktop · Freelance
+                    </div>
+                    <p>Cross-platform desktop application for a bakery: POS sales, delivery tracking, inventory, and financial reports.</p>
+                    <div class="tech-pills">
+                        <span>Kotlin Multiplatform</span><span>CMP</span><span>SQLDelight</span><span>Clean Arch</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== SKILLS ======================== -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">Skills</div>
+                <h2>Technical Expertise</h2>
+            </div>
+            <div class="skills-grid stagger reveal">
+                <div class="card skill-group">
+                    <div class="skill-group-name">Languages <span class="line"></span></div>
+                    <div class="skill-chips">
+                        <span class="skill-chip">Kotlin</span><span class="skill-chip">JavaScript</span><span class="skill-chip">C++</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <div class="skill-group-name">Android <span class="line"></span></div>
+                    <div class="skill-chips">
+                        <span class="skill-chip">Jetpack Compose</span><span class="skill-chip">Android SDK</span><span class="skill-chip">XML Layouts</span><span class="skill-chip">Coroutines</span><span class="skill-chip">Flow</span><span class="skill-chip">StateFlow</span><span class="skill-chip">Room</span><span class="skill-chip">KMP</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <div class="skill-group-name">Architecture <span class="line"></span></div>
+                    <div class="skill-chips">
+                        <span class="skill-chip">Clean Architecture</span><span class="skill-chip">MVVM</span><span class="skill-chip">MVI</span><span class="skill-chip">SOLID</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <div class="skill-group-name">Networking <span class="line"></span></div>
+                    <div class="skill-chips">
+                        <span class="skill-chip">Ktor Client</span><span class="skill-chip">REST APIs</span><span class="skill-chip">Pusher WebSockets</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <div class="skill-group-name">Testing <span class="line"></span></div>
+                    <div class="skill-chips">
+                        <span class="skill-chip">JUnit</span><span class="skill-chip">Mockito</span><span class="skill-chip">Espresso</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <div class="skill-group-name">DI & Tools <span class="line"></span></div>
+                    <div class="skill-chips">
+                        <span class="skill-chip">Hilt</span><span class="skill-chip">Koin</span><span class="skill-chip">Git & GitHub</span><span class="skill-chip">Postman</span><span class="skill-chip">Figma</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <div class="skill-group-name">CI / CD <span class="line"></span></div>
+                    <div class="skill-chips">
+                        <span class="skill-chip">GitHub Actions</span><span class="skill-chip">Automated Builds</span><span class="skill-chip">Play Store Pipelines</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <div class="skill-group-name">Cross-Platform <span class="line"></span></div>
+                    <div class="skill-chips">
+                        <span class="skill-chip">React Native</span><span class="skill-chip">Firebase</span><span class="skill-chip">Google Maps</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <div class="skill-group-name">AI Tools <span class="line"></span></div>
+                    <div class="skill-chips">
+                        <span class="skill-chip">GitHub Copilot</span><span class="skill-chip">Claude</span><span class="skill-chip">ChatGPT</span><span class="skill-chip">Cursor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== EDUCATION ======================== -->
+    <section id="education">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">Background</div>
+                <h2>Education & Activities</h2>
+            </div>
+            <div class="split-grid reveal stagger">
+                <div class="card split-card">
+                    <div class="split-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                    </div>
+                    <h3>B.Sc. Computer Science & AI</h3>
+                    <div class="meta">Damietta University, New Damietta, Egypt</div>
+                    <div class="meta-date">2021 – 2025</div>
+                </div>
+                <div class="card split-card">
+                    <div class="split-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                    </div>
+                    <h3>Media Head & Mentor</h3>
+                    <div class="meta">ACPC DU Club</div>
+                    <div class="meta-date">2022 – 2025</div>
+                    <ul>
+                        <li>Led media operations and mentored students in competitive programming for 4 consecutive years.</li>
+                        <li>ECPC participant for 4 consecutive years: 2022, 2023, 2024, and 2025.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== CONTACT ======================== -->
+    <section class="cta-section" id="contact">
+        <div class="container reveal">
+            <div class="section-tag" style="justify-content: center;">Get In Touch</div>
+            <h2>Let's Build Something <span class="gold">Together</span></h2>
+            <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+            <div class="cta-buttons">
+                <a class="btn btn-primary" href="mailto:abobakrabdallah673@gmail.com">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    Send an Email
+                </a>
+                <a class="btn btn-outline" href="https://linkedin.com/in/abobakr-abdallah" target="_blank" rel="noopener">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    LinkedIn
+                </a>
+                <a class="btn btn-outline" href="https://github.com/AbobakrAbdallah" target="_blank" rel="noopener">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Designed & Built by <a href="https://github.com/AbobakrAbdallah" target="_blank" rel="noopener">Abobakr Abdallah Zayan</a> · © 2025</p>
+        </div>
+    </footer>
+
+    <!-- ======================== JAVASCRIPT ======================== -->
+    <script>
+    (function() {
+        'use strict';
+
+        /* ── Navbar scroll & active link ── */
+        const navbar = document.getElementById('navbar');
+        const sections = document.querySelectorAll('section[id]');
+        const navAnchors = document.querySelectorAll('.nav-links a');
+
+        function onScroll() {
+            const sy = window.scrollY;
+            navbar.classList.toggle('scrolled', sy > 60);
+
+            // Active link tracking
+            let current = '';
+            sections.forEach(sec => {
+                if (sy >= sec.offsetTop - 200) current = sec.id;
+            });
+            navAnchors.forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+            });
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        /* ── Mobile menu ── */
+        const navToggle = document.getElementById('navToggle');
+        const mobileNav = document.getElementById('mobileNav');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('open');
+            mobileNav.classList.toggle('open');
+            document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+        });
+
+        mobileNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('open');
+                mobileNav.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        });
+
+        /* ── Smooth scroll ── */
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        /* ── Scroll reveal (IntersectionObserver) ── */
+        const revealEls = document.querySelectorAll('.reveal');
+        const revealObs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(el => revealObs.observe(el));
+
+        /* ── Counter animation ── */
+        const counters = document.querySelectorAll('[data-count]');
+        const counterObs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const el = entry.target;
+                const target = parseInt(el.dataset.count, 10);
+                const duration = 1800;
+                const start = performance.now();
+
+                function tick(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // Ease-out cubic
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.round(ease * target).toLocaleString();
+                    if (progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+                counterObs.unobserve(el);
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(el => counterObs.observe(el));
+
+        /* ── Cursor glow (desktop only) ── */
+        const glow = document.getElementById('cursorGlow');
+        if (window.matchMedia('(pointer: fine)').matches && glow) {
+            document.addEventListener('mousemove', (e) => {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
+            });
+        }
+
+        /* ── Card 3D tilt on hover ── */
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width  - 0.5;
+                const y = (e.clientY - rect.top)  / rect.height - 0.5;
+                card.style.transform = `translateY(-6px) perspective(600px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    })();
+    </script>
+</body>
+</html>
